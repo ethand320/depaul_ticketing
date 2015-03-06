@@ -1,0 +1,56 @@
+extends layout
+
+block content
+	h1= title
+  
+	h1.
+		Display Ticket
+	h1 #{ticketInfo.hostname}
+		
+	form(method="POST", action="/dispticket")
+		p Hostname
+			input(type="text", name="hostname" value=ticketInfo.hostname)
+		p	IP Address:  
+			input(type="text", name="ipaddress", value=ticketInfo.ipAddress)
+		p	Place in Proper VMware OU
+			input(type="checkbox", name="vmwareOU", checked=ticketInfo.vmwareOu)
+		p	Add Records to IPPlan
+			input(type="checkbox", name="addRecordsIpplan",  checked=ticketInfo.addRecordsIpplan)
+		p	Configure Nics
+			input(type="checkbox", name="configureNics", checked=ticketInfo.configureNics)
+		p	Join to Domain
+			input(type="checkbox", name="joinDomain", checked=ticketInfo.joinDomain)
+		p	Move to proper AD OU
+			input(type="checkbox", name="moveAdOU", checked=ticketInfo.moveAdOU)
+		p	Put in DNS Request
+			input(type="checkbox", name="dnsRequest", checked=ticketInfo.dnsRequest)
+		p	Add to Nagios
+			input(type="checkbox", name="addNagios", checked=ticketInfo.addNagios)
+		p	Add to Networker
+			input(type="checkbox", name="addNetworker", checked=ticketInfo.addNetworker)
+		p	Add to Networker Host Files
+			input(type="checkbox", name="networkerHostFiles",  checked=ticketInfo.networkerHostFiles)
+		p	Verify What Needs to be Backed Up
+			input(type="checkbox", name="verifyBackupDirs", checked=ticketInfo.verifyBackupDirs)
+		p	Update McAfee
+			input(type="checkbox", name="updateMcAfee", checked=ticketInfo.updateMcAfee)
+		p	Apply Wsus Regedit and run changeID script
+			input(type="checkbox", name="applyWsusRegEdit", checked=ticketInfo.applyWsusRegEdit)
+		p	Run Windows Updates
+			input(type="checkbox", name="winUpdate", checked=ticketInfo.winUpdate)
+		p	Verify Client Shows Up in WSUS
+			input(type="checkbox", name="verifyWsus", checked=ticketInfo.verifyWsus)
+		p	Check SCCM Status
+			input(type="checkbox", name="checkSccmStatus", checked=ticketInfo.checkSccmStatus)
+		p	Create Wiki Doc
+			input(type="checkbox", name="createWikiDoc", checked=ticketInfo.createWikiDoc)
+		p	Put in Additional FW/VPN Tickets
+			input(type="checkbox", name="firewallVpnTickets", checked=ticketInfo.firewallVpnTickets)
+	
+		p
+			input(type="submit")
+		
+		
+	
+
+	

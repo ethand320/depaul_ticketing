@@ -1,0 +1,47 @@
+extends layout
+
+block content
+	h1= title
+  
+	h1.
+		Display Ticket
+	h1 #{ticketInfo.hostname}
+		
+	form(method="POST", action="/dispticket-linux")
+		p Hostname
+			input(type="text", name="hostname" value=ticketInfo.hostname)
+		p	IP Address:  
+			input(type="text", name="ipaddress", value=ticketInfo.ipAddress)
+		p	Place in Proper VMware OU
+			input(type="checkbox", name="vmwareOU", checked=ticketInfo.vmwareOu)
+		p	Add Records to IPPlan
+			input(type="checkbox", name="addRecordsIpplan",  checked=ticketInfo.addRecordsIpplan)
+		p	Configure Nics
+			input(type="checkbox", name="configureNics", checked=ticketInfo.configureNics)
+		p	Enable Jumbo Frames
+			input(type="checkbox", name="enableJumboFrames", checked=ticketInfo.enableJumboFrames)
+		p	Install Spacewalk Packages
+			input(type="checkbox", name="installSpacewalk", checked=ticketInfo.installSpacewalk)
+		p	Register Client to Spacewalk
+			input(type="checkbox", name="registerSpacewalk", checked=ticketInfo.registerSpacewalk)
+		p	Run Samba Script
+			input(type="checkbox", name="runSambaScript", checked=ticketInfo.runSambaScript)
+		p	Verify Domain Auth
+			input(type="checkbox", name="verifyDomainAuth", checked=ticketInfo.verifyDomainAuth)
+		p	Put in DNS Request
+			input(type="checkbox", name="dnsRequest", checked=ticketInfo.dnsRequest)
+		p	Add to Nagios
+			input(type="checkbox", name="addNagios",  checked=ticketInfo.addNagios)
+		p	Add to Networker
+			input(type="checkbox", name="addNetworker", checked=ticketInfo.addNetworker)
+		p	Networker Host Files
+			input(type="checkbox", name="networkerHostFiles", checked=ticketInfo.networkerHostFiles)
+		p	Configure IPtables
+			input(type="checkbox", name="configureIptables", checked=ticketInfo.configureIptables)
+		p	Setup User Access/Sudo
+			input(type="checkbox", name="setupAccess", checked=ticketInfo.setupAccess)
+	
+		p
+			input(type="submit")
+		
+		
