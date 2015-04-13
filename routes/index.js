@@ -120,14 +120,30 @@ router.post('/dispticket', function(req, res){
 	
 	
 router.get('/showtickets', function(req, res){
-	
+		
+		
 		var db = req.db;
 		var collection = db.get('windowsticketcollection');
-		collection.find({}, function(e, tickets) {
-			res.render("showtickets", {"ticketlist" : tickets});
-			
+		
+		var outsideTickets = "global";
+	//	console.log("testing debuggage");
+		
+		collection.find({}, function(e, wintickets) {
+	//res.render("showtickets", {"ticketlist" : tickets});
+				
+				newCollection = db.get('linuxticketcollection');
+				
+				newCollection.find({}, function(e, linuxtickets) {
+					res.render("showtickets",{"winticketlist": wintickets, "linticketlist": linuxtickets} );
+					
+					}); 
+				
+				
 			});
-
+			//console.log("outsideTickets is " + outsideTickets);
+			//console.log("tickets is = " + tickets);
+			//res.render("showtickets", {"ticketlist" : outsideTickets});
+			
 
 	})
 

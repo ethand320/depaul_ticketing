@@ -3,4 +3,17 @@ extends layout
 block content
 	h1= title
   
-	h2 showtickets
+	h2 Windows tickets
+	
+	ul
+		each ticker, i in winticketlist
+			li
+				a(href="/dispticket?hostname=#{ticker.hostname}")= ticker.hostname
+				
+				
+	h2 Linux Tickets
+	
+	ul
+		each ticker, i in linticketlist
+			li
+				a(href="/dispticket-linux?hostname=#{ticker.hostname}")= ticker.hostname
