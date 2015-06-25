@@ -36,6 +36,7 @@ router.get('/dispticket', function(req, res){
 	
 	});
 	
+	
 
 router.post('/dispticket-linux', function(req, res){
 
@@ -49,6 +50,7 @@ router.post('/dispticket-linux', function(req, res){
 		$set:
 		{
 		ipAddress: req.body.ipaddress,
+		fwTickets: req.boy.fwTickets,
 		vmwareOu: req.body.vmwareOU,
 		configureNics: req.body.configureNics,
 		addRecordsIpplan: req.body.addRecordsIpplan,
@@ -217,6 +219,7 @@ router.post('/newticket-linux', function(req, res){
 		collection.insert( {
 		"hostname" : hostname,
 		"ipAddress" : ipAddress,
+		"fwTickets" : false,
 		"vmwareOu" : false,
 		"addRecordsIpplan" : false,
 		"configureNics" : false,

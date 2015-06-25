@@ -1,0 +1,14 @@
+[global]
+ApplicationName=ossticket2
+AwsCredentialFile=C:\Users\edrower\.elasticbeanstalk\aws_credential_file
+DevToolsEndpoint=git.elasticbeanstalk.us-east-1.amazonaws.com
+EnvironmentName=ossticket2-env
+EnvironmentTier=WebServer::Standard::1.0
+EnvironmentType=LoadBalanced
+InstanceProfileName=aws-elasticbeanstalk-ec2-role
+OptionSettingFile=C:\JS\node_code\ossticket\.elasticbeanstalk\optionsettings.ossticket2-env
+RdsEnabled=No
+Region=us-east-1
+ServiceEndpoint=https://elasticbeanstalk.us-east-1.amazonaws.com
+SolutionStack=64bit Amazon Linux 2015.03 v1.3.0 running Node.js
+

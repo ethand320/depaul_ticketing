@@ -12,6 +12,8 @@ block content
 			input(type="text", name="hostname" value=ticketInfo.hostname)
 		p	IP Address:  
 			input(type="text", name="ipaddress", value=ticketInfo.ipAddress)
+		p	Put in proxy/rhnproxy fw tickets:
+			input(type="checkbox", name="fwTickets", checked=ticketInfo.fwTickets)
 		p	Place in Proper VMware OU
 			input(type="checkbox", name="vmwareOU", checked=ticketInfo.vmwareOu)
 		p	Add Records to IPPlan
