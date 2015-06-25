@@ -50,7 +50,7 @@ router.post('/dispticket-linux', function(req, res){
 		$set:
 		{
 		ipAddress: req.body.ipaddress,
-		fwTickets: req.boy.fwTickets,
+		fwTickets: req.body.fwTickets,
 		vmwareOu: req.body.vmwareOU,
 		configureNics: req.body.configureNics,
 		addRecordsIpplan: req.body.addRecordsIpplan,
