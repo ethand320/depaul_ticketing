@@ -1,5 +1,8 @@
 var express = require('express');
 var router = express.Router();
+formArray = {"ipAddress": {"Label": "IPLabel", "Name": "ipaddress", "value" : 'unchanged'} };
+
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -30,26 +33,57 @@ router.get('/dispticket', function(req, res){
 	collection.find({hostname: req.query['hostname']}, function(e, docs) {
 	
 	
-	res.render("dispticket-linux", {"ticketInfo" : docs[0] });
+	res.render("dispticket-linux", {"ticketInfo" : docs[0], "ipVariable": ipvar });
 	
 	});
 	
 	});
 	
+	router.get('/dispticket-linux-dynamic', function(req, res){
+
+	//var formArray = {"first": {"Label": "labelval", "Name": "nameval", "Checked" : "vmwareOu" } };
 	
+	var db = req.db;
+	
+	
+	var collection = db.get('linuxticketcollection');
+	
+	
+	
+
+		collection.find({hostname: req.query['hostname']}, function(e, docs) {
+	
+		//var formArray = {"ipAddress": {"Label": "IPLabel", "Name": "ipaddress", "value" : 'unchanged'} };
+		
+
+		
+		for (field in formArray) {
+			//formArray[field].value = 'changed!';
+			formArray[field].value = docs[0][field];
+			
+			}
+		res.render("dispticket-linux-dynamic", {"ticketInfo" : docs[0], "array" : formArray });
+	
+		}); 
+	
+	
+	
+	});
 
 router.post('/dispticket-linux', function(req, res){
 
 	//var hostname = req.body.hostname;
 	var db = req.db;
 	var collection = db.get('linuxticketcollection');
-	
+	var ip_add_var = "ipAddresaa";
 	collection.update({hostname: req.body.hostname},
+	
+	
 	
 	{
 		$set:
 		{
-		ipAddress: req.body.ipaddress,
+		ip_add_var: req.body.ipaddress,
 		fwTickets: req.body.fwTickets,
 		vmwareOu: req.body.vmwareOU,
 		configureNics: req.body.configureNics,
