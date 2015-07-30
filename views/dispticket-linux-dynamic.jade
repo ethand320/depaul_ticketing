@@ -10,4 +10,11 @@ block content
 	p #{array.ipAddress.value} hello
 		
 	p #{array.ipAddress.Label}  hello2
-	p
+	
+	form(method="POST", action="/dispticket-linux")
+		each val, index in array 
+			p= val.Label
+			input(type=val.Type, name=val.Nameindex, value=val.Value)
+
+	
+	

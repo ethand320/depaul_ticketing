@@ -1,6 +1,25 @@
 var express = require('express');
 var router = express.Router();
-formArray = {"ipAddress": {"Label": "IPLabel", "Name": "ipaddress", "value" : 'unchanged'} };
+formArray = {"ipAddress": {"Label": "IP Address", "Name": "ipaddress", "Type": "text", "Value" : 'null'},
+			    "addNagios" : {"Label": "Add to Nagios", "Name": "addNagios", "Type": "checkbox", "Value" : 'null'},
+				"addNetworker": {"Label": "Add to Networker", "Name": "addNetworker", "Type": "checkbox", "Value" : 'null'},
+				"addRecordsIpplan": {"Label": "Add to IpPlan", "Name": "addRecordsIpplan", "Type": "checkbox", "Value" : 'null'},
+				"configureIptables": {"Label": "Configure Local FW", "Name": "configureIptables", "Type": "checkbox", "Value" : 'null'},
+				"configureNics": {"Label": "Setup NICs", "Name": "configureNics", "Type": "checkbox", "Value" : 'null'},
+				"dnsRequest": {"Label": "Put in DNS request", "Name": "dnsRequest", "Type": "checkbox", "Value" : 'null'},
+				"enableJumboFrames": {"Label": "Enable Jumbo Frames on backup nic", "Name": "enableJumboFrames", "Type": "checkbox", "Value" : 'null'},
+				"fwTickets": {"Label": "Put in FW tickets", "Name": "fwTickets", "Type": "checkbox", "Value" : 'null'},
+				"hostname": {"Label": "IPLabel", "Hostname": "hostname", "Type": "text", "Value" : 'null'},
+				"registerSatellite": {"Label": "Register to Satellite", "Name": "registerSatellite", "Type": "checkbox", "Value" : 'null'},
+				"addToSpreadhseet": {"Label": "Add to inventory spreadhseet", "Name": "addToSpreadhseet", "Type": "checkbox", "Value" : 'null'},
+				
+				"networkerHostFiles": {"Label": "Add to networker", "Name": "networkerHostFiles", "Type": "checkbox", "Value" : 'null'},
+				
+				"likewiseSetup": {"Label": "Setup A/D auth with likewise", "Name": "likewiseSetup", "Type": "checkbox", "Value" : 'null'},
+				"setupAccess": {"Label": "Configure login/sudo access", "Name": "setupAccess", "Type": "checkbox", "Value" : 'null'},
+				"verifyDomainAuth": {"Label": "Verify Authentication is working", "Name": "verifyDomainAuth", "Type": "checkbox", "Value" : 'null'},
+				"vmwareOu": {"Label": "Place in proper vmware OU", "Name": "vmwareOu", "Type": "checkbox", "Value" : 'null'}
+				};
 
 
 
@@ -55,11 +74,11 @@ router.get('/dispticket', function(req, res){
 	
 		//var formArray = {"ipAddress": {"Label": "IPLabel", "Name": "ipaddress", "value" : 'unchanged'} };
 		
-
-		
+		// Loop through each item in the template array and add the 'value' of what is set in the database
+		// Values are stored in the linuxticket collection in mongo, template array (formArray) is a global var for now
 		for (field in formArray) {
 			//formArray[field].value = 'changed!';
-			formArray[field].value = docs[0][field];
+			formArray[field].Value = docs[0][field];
 			
 			}
 		res.render("dispticket-linux-dynamic", {"ticketInfo" : docs[0], "array" : formArray });
