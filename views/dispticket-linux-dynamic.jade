@@ -5,16 +5,20 @@ block content
   
 	h1.
 		Display Ticket
-	h1 #{ticketInfo.hostname}
+	h1 #{ticketInfo.hostname.Value}
 		
-	p #{array.ipAddress.value} hello
 		
-	p #{array.ipAddress.Label}  hello2
 	
-	form(method="POST", action="/dispticket-linux")
-		each val, index in array 
-			p= val.Label
-			input(type=val.Type, name=val.Nameindex, value=val.Value)
-
+	form(method="POST", action="/dispticket-linux-dynamic")
+		each val, index in ticketInfo
+			if val.Label
+				p= val.Label
+				if val.Value == "on"
+					input(type=val.Type, name=val.Name, checked)
+				else if !val.Value 
+					input(type=val.Type, name=val.Name )
+				else 
+					input(type=val.Type, name=val.Name, value=val.Value)
+				
 	
-	
+		input(type="submit")

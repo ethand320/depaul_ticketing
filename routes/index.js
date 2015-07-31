@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-formArray = {"ipAddress": {"Label": "IP Address", "Name": "ipaddress", "Type": "text", "Value" : 'null'},
+formArray = {"ipAddress": {"Label": "IP Address", "Name": "ipAddress", "Type": "text", "Value" : 'null'},
 			    "addNagios" : {"Label": "Add to Nagios", "Name": "addNagios", "Type": "checkbox", "Value" : 'null'},
 				"addNetworker": {"Label": "Add to Networker", "Name": "addNetworker", "Type": "checkbox", "Value" : 'null'},
 				"addRecordsIpplan": {"Label": "Add to IpPlan", "Name": "addRecordsIpplan", "Type": "checkbox", "Value" : 'null'},
@@ -9,7 +9,7 @@ formArray = {"ipAddress": {"Label": "IP Address", "Name": "ipaddress", "Type": "
 				"dnsRequest": {"Label": "Put in DNS request", "Name": "dnsRequest", "Type": "checkbox", "Value" : 'null'},
 				"enableJumboFrames": {"Label": "Enable Jumbo Frames on backup nic", "Name": "enableJumboFrames", "Type": "checkbox", "Value" : 'null'},
 				"fwTickets": {"Label": "Put in FW tickets", "Name": "fwTickets", "Type": "checkbox", "Value" : 'null'},
-				"hostname": {"Label": "IPLabel", "Hostname": "hostname", "Type": "text", "Value" : 'null'},
+				"hostname": {"Label": "Hostname", "Name": "hostname", "Type": "text", "Value" : 'null'},
 				"registerSatellite": {"Label": "Register to Satellite", "Name": "registerSatellite", "Type": "checkbox", "Value" : 'null'},
 				"addToSpreadhseet": {"Label": "Add to inventory spreadhseet", "Name": "addToSpreadhseet", "Type": "checkbox", "Value" : 'null'},
 				
@@ -52,11 +52,15 @@ router.get('/dispticket', function(req, res){
 	collection.find({hostname: req.query['hostname']}, function(e, docs) {
 	
 	
-	res.render("dispticket-linux", {"ticketInfo" : docs[0], "ipVariable": ipvar });
+	res.render("dispticket-linux", {"ticketInfo" : docs[0] });
 	
 	});
 	
 	});
+	
+	
+	
+	
 	
 	router.get('/dispticket-linux-dynamic', function(req, res){
 
@@ -65,23 +69,23 @@ router.get('/dispticket', function(req, res){
 	var db = req.db;
 	
 	
-	var collection = db.get('linuxticketcollection');
+	var collection = db.get('linuxticketcollection-dynamic');
 	
 	
 	
 
-		collection.find({hostname: req.query['hostname']}, function(e, docs) {
+		collection.find({"hostname.Value" : req.query['hostname']}, function(e, docs) {
 	
 		//var formArray = {"ipAddress": {"Label": "IPLabel", "Name": "ipaddress", "value" : 'unchanged'} };
 		
 		// Loop through each item in the template array and add the 'value' of what is set in the database
 		// Values are stored in the linuxticket collection in mongo, template array (formArray) is a global var for now
-		for (field in formArray) {
+		//for (field in formArray) {
 			//formArray[field].value = 'changed!';
-			formArray[field].Value = docs[0][field];
+			//formArray[field].Value = docs[0][field];
 			
-			}
-		res.render("dispticket-linux-dynamic", {"ticketInfo" : docs[0], "array" : formArray });
+			//}
+		res.render("dispticket-linux-dynamic", {"ticketInfo" : docs[0] });
 	
 		}); 
 	
@@ -89,18 +93,74 @@ router.get('/dispticket', function(req, res){
 	
 	});
 
-router.post('/dispticket-linux', function(req, res){
+router.post('/dispticket-linux-dynamic', function(req, res){
 
 	//var hostname = req.body.hostname;
 	var db = req.db;
-	var collection = db.get('linuxticketcollection');
-	var ip_add_var = "ipAddresaa";
-	collection.update({hostname: req.body.hostname},
+	var collection = db.get('linuxticketcollection-dynamic');
 	
 	
+	// need to build loops here I think :(
+	// ah!  loop through the req.body array and set each corresponding val to the formArray - would totally eliminate need for this collection
 	
-	{
-		$set:
+	/*for ( request in req.body)
+		{
+			//console.log(req.body);
+			//console.log(request);
+			//try {
+			//formArray[request].Value = req.body[request];
+			
+			//} catch (ex) { console.log("missing request val is " + request);  }
+			
+			//if ( formArray[request] ) formArray[request].Value = req.body[request];
+			
+		 
+			
+			
+		
+					if ( formArray[request] ) formArray[request].Value = req.body.request;
+					
+					
+			//var vm = 'vmwareOu';
+			//if (req.body[vm]) console.log("vmware oU is found in req.body");
+			
+			
+		} */
+		
+		for ( item in formArray)
+			{
+				console.log(req.body[item]);
+				
+				
+				if( req.body[item])
+				{
+					console.log("conditionally found req.body item");
+					formArray[item].Value = req.body[item];
+				}
+				
+				else
+					{
+			
+					 // If the item in form array is NOT being submitted, then it must be set to null
+						formArray[item].Value = '';
+						console.log('Item not posted: ' + item);
+					}	
+					
+			}
+			
+			
+		formArray.hostname.Value = 'pinnwebtst01';
+			
+//	console.log(formArray.configureNics.Value);
+	//console.log("from form " + req.body.hostname);
+	
+	
+	collection.update({"hostname.Value" : 'pinnwebtst01'}, formArray
+	//collection.insert(formArray
+	
+	
+	/*{
+		$set: formArray
 		{
 		ip_add_var: req.body.ipaddress,
 		fwTickets: req.body.fwTickets,
@@ -119,9 +179,10 @@ router.post('/dispticket-linux', function(req, res){
 		configureIptables: req.body.configureIptables,
 		setupAccess: req.body.setupAccess
 		}
-	}, function(err, doc) {
+	}*/ , function(err, doc) {
 	
-		var str = '/dispticket-linux?hostname='+ req.body.hostname;
+		//var str = '/dispticket-linux-dynamic?hostname='+ req.body.hostname;
+		var str = '/dispticket-linux-dynamic?hostname='+ formArray.hostname.Value;
 		res.location(str);
 		res.redirect(str);
 	
