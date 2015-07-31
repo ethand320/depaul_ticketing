@@ -13,12 +13,12 @@ block content
 		each val, index in ticketInfo
 			if val.Label
 				p= val.Label
-				if val.Value == "on"
-					input(type=val.Type, name=val.Name, checked)
-				else if !val.Value 
-					input(type=val.Type, name=val.Name )
-				else 
-					input(type=val.Type, name=val.Name, value=val.Value)
-				
+					if val.Value == "on"
+						input(type=val.Type, name=val.Name, checked)
+					else if !val.Value 
+						input(type=val.Type, name=val.Name )
+					else 
+						input(type=val.Type, name=val.Name, value=val.Value)
+					
 	
 		input(type="submit")

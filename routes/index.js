@@ -30,7 +30,7 @@ router.get('/', function(req, res, next) {
 
 module.exports = router;
 
-
+/*  Don't need
 router.get('/dispticket', function(req, res){
 
 	var db = req.db;
@@ -57,34 +57,87 @@ router.get('/dispticket', function(req, res){
 	});
 	
 	});
+	*/
+	
+	
+	router.get('/newticket', function(req, res){
+	
+		
+	// load view for ticket generation  - hostname/ip are hard coded 
+	res.render('newticket', { title: 'Create New Ticket'});
+	
+	});
+	router.post('/newticket', function(req, res){
+	
+		
+	/*
+		pick type of ticket to create from post form submission.
+		
+		pull form json array from database of formTemplates Collection
+		insert that json array into corresponding collection by type
+		
+	
+	*/
+	
+	//not tested yet just a find query.
+	var ticketType = req.body.ticketType;
+	
+	console.log(req.body);
 	
 	
 	
+	var db = req.db;
+	var collection = db.get('ticketTypeCollection');
+	collection.find({"ticketType" : ticketType}, function(err, items ){
+	
+	
+		console.log(items);
+		var newcollection = db.get(ticketType);
+		
+		var newTicket = items[0]['formArray'];
+		newTicket.hostname.Value = req.body.hostname;
+		
+		console.log(newTicket);
+		//newTicket.hostname.Value = req.body.hostname;
+		
+		newcollection.insert(newTicket , function(err) {
+		
+			var str = '/dispticket-linux-dynamic?hostname=' + req.body.hostname + '&ticketType=' + ticketType;
+			
+			res.location(str);
+			res.redirect(str);
+		
+		
+		
+		});
+	
+	
+	});  //end of find function
+	
+	}); //end of main function
 	
 	
 	router.get('/dispticket-linux-dynamic', function(req, res){
 
-	//var formArray = {"first": {"Label": "labelval", "Name": "nameval", "Checked" : "vmwareOu" } };
 	
 	var db = req.db;
 	
+	console.log(req.query)
 	
-	var collection = db.get('linuxticketcollection-dynamic');
+	/*if (req.query['ticketType'] == 'linux')  
+		var collection = db.get('linux');
+	
+	else 
+	{
+	var collection = db.get('linuxticketcollection-dynamic'); }
+	*/
+	var collection = req.query['ticketType'];
 	
 	
 	
 
 		collection.find({"hostname.Value" : req.query['hostname']}, function(e, docs) {
 	
-		//var formArray = {"ipAddress": {"Label": "IPLabel", "Name": "ipaddress", "value" : 'unchanged'} };
-		
-		// Loop through each item in the template array and add the 'value' of what is set in the database
-		// Values are stored in the linuxticket collection in mongo, template array (formArray) is a global var for now
-		//for (field in formArray) {
-			//formArray[field].value = 'changed!';
-			//formArray[field].Value = docs[0][field];
-			
-			//}
 		res.render("dispticket-linux-dynamic", {"ticketInfo" : docs[0] });
 	
 		}); 
@@ -100,33 +153,7 @@ router.post('/dispticket-linux-dynamic', function(req, res){
 	var collection = db.get('linuxticketcollection-dynamic');
 	
 	
-	// need to build loops here I think :(
-	// ah!  loop through the req.body array and set each corresponding val to the formArray - would totally eliminate need for this collection
 	
-	/*for ( request in req.body)
-		{
-			//console.log(req.body);
-			//console.log(request);
-			//try {
-			//formArray[request].Value = req.body[request];
-			
-			//} catch (ex) { console.log("missing request val is " + request);  }
-			
-			//if ( formArray[request] ) formArray[request].Value = req.body[request];
-			
-		 
-			
-			
-		
-					if ( formArray[request] ) formArray[request].Value = req.body.request;
-					
-					
-			//var vm = 'vmwareOu';
-			//if (req.body[vm]) console.log("vmware oU is found in req.body");
-			
-			
-		} */
-		
 		for ( item in formArray)
 			{
 				console.log(req.body[item]);
@@ -148,8 +175,8 @@ router.post('/dispticket-linux-dynamic', function(req, res){
 					
 			}
 			
-			
-		formArray.hostname.Value = 'pinnwebtst01';
+			//shouldn't need this anymore
+		//formArray.hostname.Value = 'pinnwebtst01';
 			
 //	console.log(formArray.configureNics.Value);
 	//console.log("from form " + req.body.hostname);
