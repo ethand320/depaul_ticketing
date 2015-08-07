@@ -131,14 +131,17 @@ router.get('/dispticket', function(req, res){
 	{
 	var collection = db.get('linuxticketcollection-dynamic'); }
 	*/
-	var collection = req.query['ticketType'];
+	var ticketType = req.query['ticketType'];
 	
+	var collection = db.get(ticketType);
 	
+	console.log("hostname is " + req.query['hostname']);
+	console.log("tickettype is " + req.query['ticketType']);
 	
 
 		collection.find({"hostname.Value" : req.query['hostname']}, function(e, docs) {
 	
-		res.render("dispticket-linux-dynamic", {"ticketInfo" : docs[0] });
+		res.render("dispticket-linux-dynamic", {"ticketInfo" : docs[0], "ticketType": ticketType });
 	
 		}); 
 	
@@ -150,18 +153,19 @@ router.post('/dispticket-linux-dynamic', function(req, res){
 
 	//var hostname = req.body.hostname;
 	var db = req.db;
-	var collection = db.get('linuxticketcollection-dynamic');
+	var collection = db.get(req.body['ticketType']);
 	
+	console.log(req.body['ticketType']);
 	
 	
 		for ( item in formArray)
 			{
-				console.log(req.body[item]);
+				//console.log(req.body[item]);
 				
 				
 				if( req.body[item])
 				{
-					console.log("conditionally found req.body item");
+				//	console.log("conditionally found req.body item");
 					formArray[item].Value = req.body[item];
 				}
 				
@@ -170,7 +174,7 @@ router.post('/dispticket-linux-dynamic', function(req, res){
 			
 					 // If the item in form array is NOT being submitted, then it must be set to null
 						formArray[item].Value = '';
-						console.log('Item not posted: ' + item);
+					//	console.log('Item not posted: ' + item);
 					}	
 					
 			}
@@ -182,34 +186,12 @@ router.post('/dispticket-linux-dynamic', function(req, res){
 	//console.log("from form " + req.body.hostname);
 	
 	
-	collection.update({"hostname.Value" : 'pinnwebtst01'}, formArray
+	collection.update({"hostname.Value" : req.body['hostname']}, formArray
 	//collection.insert(formArray
-	
-	
-	/*{
-		$set: formArray
-		{
-		ip_add_var: req.body.ipaddress,
-		fwTickets: req.body.fwTickets,
-		vmwareOu: req.body.vmwareOU,
-		configureNics: req.body.configureNics,
-		addRecordsIpplan: req.body.addRecordsIpplan,
-		enableJumboFrames: req.body.enableJumboFrames,
-		installSpacewalk: req.body.installSpacewalk,
-		registerSpacewalk: req.body.registerSpacewalk,
-		runSambaScript: req.body.runSambaScript,
-		verifyDomainAuth: req.body.verifyDomainAuth,
-		dnsRequest: req.body.dnsRequest,
-		addNagios: req.body.addNagios,
-		addNetworker: req.body.addNetworker,
-		networkerHostFiles: req.body.networkerHostFiles,
-		configureIptables: req.body.configureIptables,
-		setupAccess: req.body.setupAccess
-		}
-	}*/ , function(err, doc) {
+ , function(err, doc) {
 	
 		//var str = '/dispticket-linux-dynamic?hostname='+ req.body.hostname;
-		var str = '/dispticket-linux-dynamic?hostname='+ formArray.hostname.Value;
+		var str = '/dispticket-linux-dynamic?hostname='+ formArray.hostname.Value + '&' + 'ticketType=' + req.body['ticketType'];
 		res.location(str);
 		res.redirect(str);
 	
