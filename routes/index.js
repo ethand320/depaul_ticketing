@@ -247,12 +247,52 @@ router.post('/dispticket', function(req, res){
 router.get('/showtickets', function(req, res){
 		
 		
+		
+		//new code**
+		//db.users.find().forEach( function(myDoc) { print( "user: " + myDoc.name ); } );
+		
 		var db = req.db;
-		var collection = db.get('windowsticketcollection');
+		var collection = db.get('ticketTypeCollection');
+		var allTickets;
 		
-		var outsideTickets = "global";
-	//	console.log("testing debuggage");
+
 		
+		collection.find().each(function(ticketTypesFound) {
+		var currentTicketType = ticketTypesFound.ticketType;
+		var collection = db.get(currentTicketType);
+		
+		
+		console.log(currentTicketType);
+		
+			 collection.find({}, function(e, tickets) {
+			
+		//		console.log(tickets);
+				
+				for ( ticket in tickets)
+				{
+					var hostname = ticket.hostname;
+					allTickets[hostname] = ticket;
+				}
+			 
+			res.render("showtickets-dynamic", {"ticketList": allTickets} );
+			}); 
+		
+		
+		//console.log(ticketType);
+		
+		}); // close for each
+		
+
+
+
+	});
+
+		
+		
+		
+		
+
+	/*	
 		collection.find({}, function(e, wintickets) {
 	//res.render("showtickets", {"ticketlist" : tickets});
 				
@@ -272,7 +312,7 @@ router.get('/showtickets', function(req, res){
 
 	})
 
-	
+	*/
 
 router.get('/newticket-windows', function(req, res){
 
