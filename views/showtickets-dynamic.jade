@@ -1,0 +1,16 @@
+extends layout
+
+block content
+	h1= title
+  
+	h2 All Current Tickets
+	
+	
+	ul
+		each ticket, i in ticketList
+			li
+				- if( typeof(ticket) !== 'undefined') {
+				- try {console.log(ticket.hostname.Value);
+				a(href="/dispticket-linux-dynamic?hostname=#{ticket.hostname.Value}&ticketType=linux")= ticket.hostname.Value
+				
+				- }   catch(err){}  }

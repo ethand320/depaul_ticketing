@@ -253,38 +253,87 @@ router.get('/showtickets', function(req, res){
 		
 		var db = req.db;
 		var collection = db.get('ticketTypeCollection');
-		var allTickets;
+		var allTickets = [] ;
 		
 
 		
-		collection.find().each(function(ticketTypesFound) {
-		var currentTicketType = ticketTypesFound.ticketType;
-		var collection = db.get(currentTicketType);
+		//collection.find().each(function(ticketTypesFound) {
+		//var currentTicketType = ticketTypesFound.ticketType;
+		
+		var currentTicketType = 'linux';
+		var newcollection = db.get(currentTicketType);
 		
 		
-		console.log(currentTicketType);
+		//console.log(currentTicketType);
 		
-			 collection.find({}, function(e, tickets) {
-			
-		//		console.log(tickets);
+		//var findTickets =	function(db, callback) {
 				
-				for ( ticket in tickets)
-				{
-					var hostname = ticket.hostname;
-					allTickets[hostname] = ticket;
-				}
+				
+				newcollection.find({}, function(e, docs) {
+				
+				
+						
+				res.render("showtickets-dynamic", {"ticketList": docs} );
+
+				});
+				
+				
+			/*
+				
+			newcollection.find().each(function(doc){
+				
+						//console.log(doc.hostname.Value);
+					try {
+					if(doc.hostname.Value != null || doc.hostname.Value == 'null')
+						{
+						console.log("hostname found! " + doc.hostname.Value);
+						var singlehostname = doc.hostname.Value;
+						console.log(singlehostname);
+						
+						//allTickets[doc.hostname.Value] = doc.hostname.Value;
+						allTickets.push(singlehostname);
+						
+						console.log("allTickets is inside " + allTickets) ;
+						
+						console.log(allTickets[0]);
+						}
+					
+					}
+					catch (err) { console.log("err is " + err); }
+					
+				
+				});
+				
+				
+				*/
+				
+				//console.log(cursor);
+				
+				
+			
+				
+			
+		
+
 			 
-			res.render("showtickets-dynamic", {"ticketList": allTickets} );
-			}); 
+			
+		//	}; 
+			
+		
 		
 		
 		//console.log(ticketType);
-		
-		}); // close for each
-		
-
-
-
+	//	findTickets(db, function() {} );
+		/*		
+				var tickets = allTickets.toString();
+				console.log("tickets is " + tickets);
+				
+				res.render("showtickets-dynamic", {"ticketList": tickets} );
+			*/
+			
+			
+	//	}); // close for each
+				
 	});
 
 		
